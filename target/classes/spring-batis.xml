@@ -1,76 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:p="http://www.springframework.org/schema/p"
-       xmlns:c="http://www.springframework.org/schema/c"
-       xmlns:util="http://www.springframework.org/schema/util"
-       xmlns:aop="http://www.springframework.org/schema/aop"
-       xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
-       http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
-       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd
-       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
-       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
-       http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
-       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
-
-    <!--1 引入属性文件，在配置中占位使用 -->
-    <context:property-placeholder location="classpath*:jdbc.properties"/>
-
-    <!--2 配置C3P0数据源 -->
-    <bean id="datasource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
-          destroy-method="close">
-        <!--驱动类名 -->
-        <property name="driverClass" value="${mysql.driver}"/>
-        <!-- url -->
-        <property name="jdbcUrl" value="${mysql.url}"/>
-        <!-- 用户名 -->
-        <property name="user" value="${mysql.uid}"/>
-        <!-- 密码 -->
-        <property name="password" value="${mysql.password}"/>
-        <!-- 当连接池中的连接耗尽的时候c3p0一次同时获取的连接数 -->
-        <property name="acquireIncrement" value="${mysql.acquireIncrement}"></property>
-        <!-- 初始连接池大小 -->
-        <property name="initialPoolSize" value="${mysql.initialPoolSize}"></property>
-        <!-- 连接池中连接最小个数 -->
-        <property name="minPoolSize" value="${mysql.minPoolSize}"></property>
-        <!-- 连接池中连接最大个数 -->
-        <property name="maxPoolSize" value="${mysql.maxPoolSize}"></property>
-    </bean>
-
-    <!--3 会话工厂bean sqlSessionFactoryBean -->
-    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <!-- 配置文件路径 -->
-        <!--<property name="configLocation" value="classpath:MyBatisCfg.xml"></property>-->
-        <!-- 数据源 -->
-        <property name="dataSource" ref="datasource"></property>
-        <!-- sql映射文件路径 -->
-        <property name="mapperLocations" value="classpath*:com/hollysys/mapping/*Mapper.xml"></property>
-    </bean>
-
-    <!--4 自动扫描对象关系映射 -->
-    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <!--指定会话工厂，如果当前上下文中只定义了一个则该属性可省去 -->
-        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
-        <!-- 指定要自动扫描接口的基础包，实现接口 -->
-        <property name="basePackage" value="com.zhangguo.ssmall.mapper"></property>
-    </bean>
-
-    <!--5 声明式事务管理 -->
-    <!--定义事物管理器，由spring管理事务 -->
-    <bean id="transactionManager"
-          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="datasource"></property>
-    </bean>
-    <!--支持注解驱动的事务管理，指定事务管理器 -->
-    <tx:annotation-driven transaction-manager="transactionManager"/>
-
-    <!--6 容器自动扫描IOC组件 -->
-    <context:component-scan base-package="com.hollysys"></context:component-scan>
-
-    <!--7 aspectj支持自动代理实现AOP功能 -->
-    <aop:aspectj-autoproxy proxy-target-class="true"></aop:aspectj-autoproxy>
-
-</beans>  
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <!--指定mybatis使用日志组件 -->
+        <!--<setting name="logImpl" value="LOG4J2" />-->
+        <!--开启全局的二级缓存 -->
+        <setting name="cacheEnabled" value="false" />
+        <!--开启延时加载，如果有关联关系，则默认不会获取数据
+        延迟加载的全局开关。当开启时，所有关联对象都会延迟加载。
+        特定关联关系中可通过设置fetchType属性来覆盖该项的开关状态。
+        在association中指定fetchType="eager(立即)" 或者 lazy(延迟)
+        默认：false
+        -->
+        <setting name="lazyLoadingEnabled" value="true" />
+        <!--true时，对任意延迟属性的调用会使带有延迟加载属性的对象完整加载；
+          false，每种属性将会按需加载。
+          默认为：true-->
+        <setting name="aggressiveLazyLoading" value="false" />
+    </settings>
+    <typeAliases>
+        <package name="com.demo.entity" />
+    </typeAliases>
+</configuration>

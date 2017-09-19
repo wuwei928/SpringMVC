@@ -1,0 +1,216 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>控制约束设计</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="../lib/AdminLTE/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../lib/font-awesome/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="../lib/Ionicons/css/ionicons.min.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="../../bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../lib/AdminLTE/dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="../lib/AdminLTE/dist/css/skins/skin-blue.min.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Google Font -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+    <style>
+        table td {
+            text-align: right;
+        }
+
+            table td:first-child {
+                text-align: left;
+            }
+    </style>
+    <div class="box box-primary direct-chat direct-chat-primary">
+    <div class="box-header with-border">
+        <i class="fa fa-bar-chart-o"></i>
+        <h3 class="box-title">控制约束设计</h3>
+    </div>
+        <div class="box-body">
+            <table id="example2" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>508μ</th>
+                        <th>508σ</th>
+                        <th>608μ</th>
+                        <th>608σ</th>
+                        <th>708μ</th>
+                        <th>708σ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>实际总煤量</td>
+                        <td>210.508</td>
+                        <td>1.185</td>
+                        <td>246.6</td>
+                        <td>2.814</td>
+                        <td>262.721</td>
+                        <td>2.299</td>
+                    </tr>
+                    <tr>
+                        <td>再热蒸汽压力</td>
+                        <td>2.116</td>
+                        <td>0.005</td>
+                        <td>2.54</td>
+                        <td>0.008</td>
+                        <td>2.781</td>
+                        <td>0.005</td>
+                    </tr>
+                    <tr>
+                        <td>冷再进口蒸汽压力取平均后</td>
+                        <td>2.37</td>
+                        <td>0.005</td>
+                        <td>2.826</td>
+                        <td>0.009</td>
+                        <td>3.083</td>
+                        <td>0.005</td>
+                    </tr>
+                    <tr>
+                        <td>锅炉给水流量</td>
+                        <td>1403.203</td>
+                        <td>6.535</td>
+                        <td>1688.785</td>
+                        <td>16.232</td>
+                        <td>1853.2</td>
+                        <td>7.572</td>
+                    </tr>
+                    <tr>
+                        <td>锅炉引风机B风量(-0.90)</td>
+                        <td>3223.829</td>
+                        <td>26.51</td>
+                        <td>3361.954</td>
+                        <td>20.053</td>
+                        <td>3637.996</td>
+                        <td>8.324</td>
+                    </tr>
+                    <tr>
+                        <td>锅炉引风机A风量1(0.32)</td>
+                        <td>3283.301</td>
+                        <td>26.513</td>
+                        <td>3425.092</td>
+                        <td>20.059</td>
+                        <td>3659.293</td>
+                        <td>8.316</td>
+                    </tr>
+                    <tr>
+                        <td>炉膛总风量</td>
+                        <td>2122.235</td>
+                        <td>11.145</td>
+                        <td>2348.147</td>
+                        <td>14.657</td>
+                        <td>2622.125</td>
+                        <td>10.39</td>
+                    </tr>
+                    <tr>
+                        <td>氧量</td>
+                        <td>5.683</td>
+                        <td>0.137</td>
+                        <td>4.66</td>
+                        <td>0.21</td>
+                        <td>4.233</td>
+                        <td>0.078</td>
+                    </tr>
+                    <tr>
+                        <td>除氧器温度(0.82)</td>
+                        <td>143.075</td>
+                        <td>0.154</td>
+                        <td>149.998</td>
+                        <td>0.351</td>
+                        <td>152.568</td>
+                        <td>0.636</td>
+                    </tr>
+                    <tr>
+                        <td>锅炉省煤器出口烟气含氧量</td>
+                        <td>13.454</td>
+                        <td>1.704</td>
+                        <td>17.226</td>
+                        <td>2.047</td>
+                        <td>25.597</td>
+                        <td>1.714</td>
+                    </tr>
+                    <tr>
+                        <td>燃料总量（%）（sh5-10）</td>
+                        <td>188.662</td>
+                        <td>1.101</td>
+                        <td>229.834</td>
+                        <td>2.527</td>
+                        <td>239.064</td>
+                        <td>1.767</td>
+                    </tr>
+                    <tr>
+                        <td>B送风机风量1</td>
+                        <td>0.698</td>
+                        <td>0.009</td>
+                        <td>0.857</td>
+                        <td>0.02</td>
+                        <td>0.985</td>
+                        <td>0.006</td>
+                    </tr>
+                    <tr>
+                        <td>B送风机风量2</td>
+                        <td>0.685</td>
+                        <td>0.009</td>
+                        <td>0.845</td>
+                        <td>0.02</td>
+                        <td>0.973</td>
+                        <td>0.006</td>
+                    </tr>
+                    <tr>
+                        <td>A送风机风量1</td>
+                        <td>0.572</td>
+                        <td>0.023</td>
+                        <td>0.726</td>
+                        <td>0.021</td>
+                        <td>0.865</td>
+                        <td>0.015</td>
+                    </tr>
+                    <tr>
+                        <td>A送风机风量2</td>
+                        <td>0.577</td>
+                        <td>0.023</td>
+                        <td>0.731</td>
+                        <td>0.021</td>
+                        <td>0.87</td>
+                        <td>0.015</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+    <script>
+        $(function () {
+            $('#example2').DataTable({
+                'paging': true,
+                'lengthChange': false,
+                'searching': false,
+                'ordering': true,
+                'info': true,
+                'autoWidth': false
+            })
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,508 @@
+﻿<!DOCTYPE html>
+<html class="k-material">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>控制优化仿真分析</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.6 -->
+    <link rel="stylesheet" href="../lib/AdminLTE/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../lib/font-awesome/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="../lib/Ionicons/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../lib/AdminLTE/dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
+          page. However, you can choose any other skin. Make sure you
+          apply the skin class to the body tag so the changes take effect.
+    -->
+    <link rel="stylesheet" href="../lib/AdminLTE/dist/css/skins/skin-blue.min.css">
+
+    <link rel="stylesheet" href="../lib/kendo-ui/styles/kendo.common-bootstrap.min.css" />
+    <link rel="stylesheet" href="../lib/kendo-ui/styles/kendo.bootstrap.min.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- REQUIRED JS SCRIPTS -->
+    <!-- jQuery 2.2.3 -->
+    <script src="../lib/AdminLTE/plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <!-- Bootstrap 3.3.6 -->
+    <script src="../lib/AdminLTE/bootstrap/js/bootstrap.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="../lib/AdminLTE/dist/js/app.min.js"></script>
+    <!-- Optionally, you can add Slimscroll and FastClick plugins.
+         Both of these plugins are recommended to enhance the
+         user experience. Slimscroll is required when using the
+         fixed layout. -->
+
+
+
+    <script src="../lib/kendo-ui/js/jszip.min.js"></script>
+    <script src="../lib/kendo-ui/js/kendo.all.min.js"></script>
+    <script src="../lib/kendo-ui/js/kendo.timezones.min.js"></script>
+
+
+    <script src="../lib/kendo-ui/js/cultures/kendo.culture.zh-CN.min.js"></script>
+    <script src="../lib/kendo-ui/js/messages/kendo.messages.zh-CN.min.js"></script>
+
+    <script src="../js/common.js"></script>
+    <script>
+        kendo.culture("zh-CN");     //控件本地化
+    </script>
+</head>
+<body>
+    <div id="main">
+    <div class="box-header with-border">
+        <i class="fa fa-bar-chart-o"></i>
+        <h3 class="box-title">控制优化仿真分析（蓝色是优化模型控制量）</h3>
+    </div>
+        <div id="exampleWrap">
+            <script>$("#exampleWrap").css("visibility", "hidden");</script>
+
+            <div id="example">
+                <div class="demo-section k-content wide">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div id="chart"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <div id="chart1"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div id="chart2"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <div id="chart3"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div id="chart4"></div>
+                        </div>
+                        <div class="col-md-6"></div>
+                    </div>
+
+                </div>
+                <script>
+                    var TICKS_PER_DAY = 86400000,
+                        POINTS = 100,
+                        lastDate = new Date("2017/09/05"),
+                        fpsUpdateInterval,
+                        stocks = [[], [], [], [], [], [], [], [], [], [], []];
+                    var col =   [0, , , , , , , , , , , , , , , , , , , , , , , ,
+                               200, , , , , , , , , , , , , , , , , , , , , , , ,
+                               400, , , , , , , , , , , , , , , , , , , , , , , ,
+                               600, , , , , , , , , , , , , , , , , , , , , , , ,
+                               800];
+
+                    function createChart() {
+                        $("#chart").kendoChart({
+                            renderAs: "canvas",
+                            title: {
+                                text: "设定输出功率为508时原输出功率与控制后输出功率对比图"
+                            },
+                            legend: {
+                                visible: false
+                            },
+                            series: [{
+                                type: "line",
+                                name: "Stock B",
+                                color: "#0165AA",
+                                markers: {
+                                    visible: false
+                                },
+                                data: stocks[1]
+                            }, {
+                                type: "line",
+                                name: "Stock C",
+                                color: "#ED7D31",
+                                markers: {
+                                    visible: false
+                                },
+                                data: stocks[2]
+                            }],
+                            categoryAxis: {
+                                categories: col,
+                                title: {
+                                    text: "Time"
+                                },
+                                majorGridLines: {
+                                    visible: false
+                                }
+                            },
+                            transitions: false
+                        });
+                        $("#chart1").kendoChart({
+                            renderAs: "canvas",
+                            title: {
+                                text: "设定输出功率为508时原进煤量与控制后进煤量对比图"
+                            },
+                            legend: {
+                                visible: false
+                            },
+                            series: [{
+                                type: "line",
+                                name: "Stock B",
+                                color: "#0165AA",
+                                markers: {
+                                    visible: false
+                                },
+                                data: stocks[3]
+                            }, {
+                                type: "line",
+                                name: "Stock C",
+                                color: "#ED7D31",
+                                markers: {
+                                    visible: false
+                                },
+                                data: stocks[4]
+                            }],
+                            categoryAxis: {
+                                categories: col,
+                                title: {
+                                    text: "Time"
+                                },
+                                majorGridLines: {
+                                    visible: false
+                                }
+                            },
+                            transitions: false
+                        });
+                        $("#chart2").kendoChart({
+                            renderAs: "canvas",
+                            title: {
+                                text: "设定输出功率为508时原进水量与控制后进水量对比图"
+                            },
+                            legend: {
+                                visible: false
+                            },
+                            series: [{
+                                type: "line",
+                                name: "Stock B",
+                                color: "#0165AA",
+                                markers: {
+                                    visible: false
+                                },
+                                data: stocks[5]
+                            }, {
+                                type: "line",
+                                name: "Stock C",
+                                color: "#ED7D31",
+                                markers: {
+                                    visible: false
+                                },
+                                data: stocks[6]
+                            }],
+                            categoryAxis: {
+                                categories: col,
+                                title: {
+                                    text: "Time"
+                                },
+                                majorGridLines: {
+                                    visible: false
+                                }
+                            },
+                            transitions: false
+                        });
+                        $("#chart3").kendoChart({
+                            renderAs: "canvas",
+                            title: {
+                                text: "设定输出功率为508时原氧量与控制后氧量对比图"
+                            },
+                            legend: {
+                                visible: false
+                            },
+                            series: [{
+                                type: "line",
+                                name: "Stock B",
+                                color: "#0165AA",
+                                markers: {
+                                    visible: false
+                                },
+                                data: stocks[7]
+                            }, {
+                                type: "line",
+                                name: "Stock C",
+                                color: "#ED7D31",
+                                markers: {
+                                    visible: false
+                                },
+                                data: stocks[8]
+                            }],
+                            valueAxis: {
+                                min: 5,
+                                max: 6,
+                                crosshair: {
+                                    opacity: 0.1,
+                                    visible: true
+                                }
+                            },
+                            categoryAxis: {
+                                categories: col,
+                                title: {
+                                    text: "Time"
+                                },
+                                majorGridLines: {
+                                    visible: false
+                                }
+                            },
+                            transitions: false
+                        });
+                        $("#chart4").kendoChart({
+                            renderAs: "canvas",
+                            title: {
+                                text: "设定输出功率为508时原B送风机风量与控制后风量对比图"
+                            },
+                            legend: {
+                                visible: false
+                            },
+                            series: [{
+                                type: "line",
+                                name: "Stock B",
+                                color: "#0165AA",
+                                markers: {
+                                    visible: false
+                                },
+                                data: stocks[9]
+                            }, {
+                                type: "line",
+                                name: "Stock C",
+                                color: "#ED7D31",
+                                markers: {
+                                    visible: false
+                                },
+                                data: stocks[10]
+                            }],
+                            valueAxis: {
+                                min: 0.6,
+                                max: 0.8,
+                                crosshair: {
+                                    opacity: 0.1,
+                                    visible: true
+                                }
+                            },
+                            categoryAxis: {
+                                categories: col,
+                                title: {
+                                    text: "Time"
+                                },
+                                majorGridLines: {
+                                    visible: false
+                                }
+                            },
+                            transitions: false
+                        });
+                    }
+
+                    $(document).ready(function () {
+                        //initializeData();
+
+                        setTimeout(function () {
+                            createChart();
+
+                            $("#example").bind("kendo:skinChange", function (e) {
+                                createChart();
+                            });
+                            play();
+
+                        }, 400);
+                    });
+
+                    function initializeData() {
+                        for (var i = 0; i < POINTS; i++) {
+                            addPoint1();
+                            addPoint();
+                        }
+                    }
+
+                    function play() {
+                        step();
+                        step1();
+                        step2();
+                        step3();
+                        step4();
+                    }
+
+                    function step() {
+                        addPoint();
+
+                        setTimeout(function () {
+                            $("#chart").data("kendoChart").refresh();
+                            kendo.animationFrame(step);
+                        }, 500);
+                    }
+                    function step1() {
+                        addPoint1();
+
+                        setTimeout(function () {
+                            $("#chart1").data("kendoChart").refresh();
+                            kendo.animationFrame(step1);
+                        }, 500);
+                    }
+                    function step2() {
+                        addPoint2();
+
+                        setTimeout(function () {
+                            $("#chart2").data("kendoChart").refresh();
+                            kendo.animationFrame(step2);
+                        }, 500);
+                    }
+                    function step3() {
+                        addPoint3();
+
+                        setTimeout(function () {
+                            $("#chart3").data("kendoChart").refresh();
+                            kendo.animationFrame(step3);
+                        }, 500);
+                    }
+                    function step4() {
+                        addPoint4();
+
+                        setTimeout(function () {
+                            $("#chart4").data("kendoChart").refresh();
+                            kendo.animationFrame(step4);
+                        }, 500);
+                    }
+
+
+                    function addPoint() {
+                        var number;
+                        var random = Math.round(Math.random());
+                        if (random === 0) {
+                            number = 508 + parseFloat("0." + randomize(0, 3));
+                        } else {
+                            number = 508 - parseFloat("0." + randomize(0, 3));
+                        }
+
+                        stocks[1].push(number);
+
+                        var number2 = randomize(506, 510);
+                        stocks[2].push(number2);
+
+                        if (stocks[1].length > POINTS) {
+                            stocks[1].shift();
+                        }
+
+                        if (stocks[2].length > POINTS) {
+                            stocks[2].shift();
+                        }
+
+                    }
+
+                    function addPoint1() {
+                        var number;
+                        var random = Math.round(Math.random());
+                        if (random === 0) {
+                            number = 210 + randomize(0, 1);
+                        } else {
+                            number = 210 - randomize(0, 1);
+                        }
+
+                        stocks[3].push(number);
+
+                        var number2 = randomize(206, 220);
+                        stocks[4].push(number2);
+
+                        // Shift the data points of each series to the left
+                        if (stocks[3].length > POINTS) {
+                            stocks[3].shift();
+                        }
+
+                        if (stocks[4].length > POINTS) {
+                            stocks[4].shift();
+                        }
+
+                    }
+
+                    function addPoint2() {
+                        var number;
+                        var random = Math.round(Math.random());
+                        if (random === 0) {
+                            number = 1400 + randomize(0, 3);
+                        } else {
+                            number = 1400 - randomize(0, 3);
+                        }
+
+                        stocks[5].push(number);
+
+                        var number2 = randomize(1370, 1420);
+                        stocks[6].push(number2);
+
+                        if (stocks[5].length > POINTS) {
+                            stocks[5].shift();
+                        }
+
+                        if (stocks[6].length > POINTS) {
+                            stocks[6].shift();
+                        }
+
+                    }
+
+                    function addPoint3() {
+                        var number = 5 + parseFloat("0." + randomize(5, 7));
+                        stocks[7].push(number);
+
+                        var number2 = 5 + parseFloat("0." + randomize(2, 9));
+                        stocks[8].push(number2);
+
+                        if (stocks[7].length > POINTS) {
+                            stocks[7].shift();
+                        }
+
+                        if (stocks[8].length > POINTS) {
+                            stocks[8].shift();
+                        }
+
+                    }
+
+                    function addPoint4() {
+                        var number;
+                        var random = Math.round(Math.random());
+                        if (random === 0) {
+                            number = 0.7 + parseFloat("0.0" + randomize(1, 2));
+                        } else {
+                            number = 0.7 - parseFloat("0.0" + randomize(1, 2));;
+                        }
+                        stocks[9].push(number);
+
+                        var random1 = Math.round(Math.random());
+                        var number2;
+                        if (random1 === 0) {
+                            number2 = 0.7 + parseFloat("0.0" + randomize(1, 9));
+                        } else {
+                            number2 = 0.6 + parseFloat("0.0" + randomize(1, 9));;
+                        }
+                        
+                        stocks[10].push(number2);
+
+                        if (stocks[9].length > POINTS) {
+                            stocks[9].shift();
+                        }
+
+                        if (stocks[10].length > POINTS) {
+                            stocks[10].shift();
+                        }
+
+                    }
+
+                    function randomize(m, n) {
+                        return Math.random() * (n - m) + m;
+                    }
+
+                </script>
+            </div>
+            <script>
+                $(function () { $("#exampleWrap").css("visibility", ""); });
+            </script>
+        </div>
+    </div>
+</body>
+</html>

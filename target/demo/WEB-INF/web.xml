@@ -3,7 +3,7 @@
         "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns="http://java.sun.com/xml/ns/javaee" xmlns:mvc="http://www.springframework.org/schema/mvc"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          id="WebApp_ID" version="3.0">
     <display-name>Archetype Created Web Application</display-name>
@@ -11,7 +11,7 @@
     <context-param>
         <description>设置Spring加载时的配置文件位置，默认位置在WEB-INF/lib目录下</description>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath*:spring-mvc.xml,classpath*:spring-batis.xml</param-value>
+        <param-value>classpath*:applicationContext.xml</param-value>
     </context-param>
 
     <filter>
