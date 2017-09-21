@@ -3,6 +3,7 @@ package com.demo.controller;
 import com.demo.entity.User;
 import com.demo.service.UserServiceI;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
@@ -15,15 +16,13 @@ import java.util.List;
 @Controller
 @RequestMapping("/user")
 public class UserController {
-
     @Resource
     UserServiceI userService;
 
     @RequestMapping(value="/userList")
-    public String listUser(HttpServletRequest request) {
-
+    public String listUser() {
         List<User> users = userService.getUsers();
-        request.setAttribute("users", users);
+        //request.setAttribute("users", users);
         return "user/userList";
     }
 }

@@ -13,6 +13,8 @@
     <!-- 自动扫描包，实现支持注解的IOC -->
     <context:component-scan base-package="com.demo" />
 
+    <mvc:annotation-driven />
+
     <!-- Spring MVC不处理静态资源 -->
     <mvc:default-servlet-handler />
 
@@ -21,13 +23,15 @@
         <property name="removeSemicolonContent" value="false" />
     </bean>
 
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter" />
+
     <!-- 内部视图解析器，JSP与JSTL模板 -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"
             id="internalResourceViewResolver">
         <!--指定视图渲染类 -->
         <property name="viewClass"  value="org.springframework.web.servlet.view.JstlView" />
         <!--自动添加到路径中的前缀 -->
-        <property name="prefix" value="/views/" />
+        <property name="prefix" value="/views" />
         <!--自动添加到路径中的后缀 -->
         <property name="suffix" value=".jsp" />
         <!--设置所有视图的内容类型，如果视图本身设置内容类型视图类可以忽略 -->
