@@ -369,7 +369,7 @@
         <section class="content">
 
             <!-- Your Page Content Here -->
-            <iframe id="main" src="views/user/userList.jsp" name="main" onload="changeFrameHeight()" frameborder="0" style="width:100%;"></iframe>
+            <iframe id="main" src="user/userList" name="main" onload="changeFrameHeight()" frameborder="0" style="width:100%;"></iframe>
         </section>
         <!-- /.content -->
     </div>

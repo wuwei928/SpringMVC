@@ -20,9 +20,9 @@ public class UserController {
     UserServiceI userService;
 
     @RequestMapping(value="/userList")
-    public String listUser() {
+    public String listUser(Model model) {
         List<User> users = userService.getUsers();
-        //request.setAttribute("users", users);
+        model.addAttribute("users", users);
         return "user/userList";
     }
 }
